@@ -1,5 +1,6 @@
 package hello.jdbc.repository;
 
+import com.zaxxer.hikari.HikariDataSource;
 import hello.jdbc.connection.ConnectionConst;
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,13 @@ class MemberRepositoryV1Test {
     @BeforeEach
     void beforeEach() {
         //기본 DriverManager - 항상 새로운 커넥션을 회득
-        DriverManagerDataSource dataSource = new DriverManagerDataSource(ConnectionConst.URL, ConnectionConst.USERNAME, ConnectionConst.PASSWORD);
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource(ConnectionConst.URL, ConnectionConst.USERNAME, ConnectionConst.PASSWORD);
+
+        //커넥션 풀링
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(ConnectionConst.URL);
+        dataSource.setUsername(ConnectionConst.USERNAME);
+        dataSource.setPassword(ConnectionConst.PASSWORD);
 
         repository = new MemberRepositoryV1(dataSource);
     }
